@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "d015e965-b01e-460f-a916-758d93f476c7",
+		"name": "Cafe-Node",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17649570"
+	},
+	"item": [
+		{
+			"name": "Usuario: Crear usuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nombre",
+							"value": "Lester",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "lester.marroquin96@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/usuario",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario: PUT",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nombre",
+							"value": "Daniel",
+							"type": "text"
+						},
+						{
+							"key": "google",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "USER_ROLE",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/usuario/64acd47d53e9f33baa362e93",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"usuario",
+						"64acd47d53e9f33baa362e93"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario: Obtener Usuario por limite y dede",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/usuario?limite=5&desde=0",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"usuario"
+					],
+					"query": [
+						{
+							"key": "limite",
+							"value": "5"
+						},
+						{
+							"key": "desde",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario: Borrar usuario de BD",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/usuario/64ace4c8893d6258dc246344",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"usuario",
+						"64ace4c8893d6258dc246344"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
