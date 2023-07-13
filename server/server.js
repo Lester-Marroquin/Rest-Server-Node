@@ -1,8 +1,9 @@
 require('./config/config');
 
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -10,36 +11,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.get('/usuario', function (req, res) {
-  res.json('Get Usuario')
-})
+app.use(require('./routes/usuario'));
 
-app.post('/usuario', function (req, res) {
-  let body = req.body;
-
-  if (body.nombre === undefined) {
-    res.status(400).json({
-      ok: false,
-      mensaje: 'El campo nombre esta vacio',
-    });
-  } else {
-    res.json({
-      persona: body
-    });
-  };
-
-});
-
-app.put('/usuario/:id', function (req, res) {
-  let id = req.params.id;
-  res.json({
-    id
-  });
-});
-
-app.delete('/usuario', function (req, res) {
-  res.json('Delete Usuario')
-});
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Base de datos Connected!'))
+  .catch( error => console.log('Error al conectarse', error));
 
 app.listen(process.env.PORT, ()=>{
   console.log(`Escuchando en el puerto: `, process.env.PORT);
