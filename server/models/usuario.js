@@ -4,7 +4,7 @@ const uniqueValitador = require('mongoose-unique-validator');
 
 let Schema = mongoose.Schema;
 
-let rolesValido = {
+let rolesValidos = {
     values: ['ADMIN_ROLE', 'USER_ROLE'],
     message: '{VALUE} no es un rol válido'
 }
@@ -30,7 +30,7 @@ let usuarioSchema = new Schema({
     role: {
         type: String,
         default: 'USER_ROLE',
-        enum: rolesValido
+        enum: rolesValidos
     },
     estado: {
         type: Boolean,
