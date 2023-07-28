@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Sing-In Demo</title>
+    <meta http-equiv="Referrer-Policy" content="no-referrer" />
+  </head>
+  <body>
+    <script
+      src="https://accounts.google.com/gsi/client"
+      onload="initGoogleSignIn()"
+      onerror="handleLoadError()"
+      defer
+    ></script>
+    <div
+      id="g_id_onload"
+      data-client_id="395983208338-k886ivr3ufr4lfttvb65ereohv4c579d.apps.googleusercontent.com"
+      data-callback="handleCredentialResponse"
+      data-auto_prompt="false"
+    ></div>
+    <div class="g_id_signin" data-type="standard"></div>
+
+    <button class="g_id_signout" id="signout_button">Sign Out</button>
+
+    <script>
+      function initGoogleSignIn() {
+        gapi.load("auth2", function () {
+          gapi.auth2.init();
+        });
+      }
+
+      function handleLoadError() {
+        console.error("Error loading Google Sign-In API.");
+      }
+
+      // Función de devolución de llamada que se ejecutará cuando se reciba la respuesta de Google
+      function handleCredentialResponse(response) {
+        var responsePayload = response.credential;
+        //Impresión del token:
+        console.log("Token de ID (JWT): " + responsePayload);
+
+        // Decodificar el token de ID JWT para obtener los datos del perfil del usuario
+        var decodedToken = atob(responsePayload.split(".")[1]);
+        var profileData = JSON.parse(decodedToken);
+        console.log("ID: " + profileData.sub);
+        console.log("Nombre: " + profileData.name);
+        console.log("Correo electrónico: " + profileData.email);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/google");
+        xhr.setRequestHeader(
+          "Content-Type",
+          "application/x-www-form-urlencoded"
+        );
+        xhr.onload = function () {
+          console.log("Signed in as: " + xhr.responseText);
+        };
+        xhr.send("idtoken=" + responsePayload);
+      }
+
+      // Función de cierre de sesión
+      const button = document.getElementById("signout_button");
+      button.onclick = () => {
+        google.accounts.id.disableAutoSelect();
+        window.location.href = "http://localhost:3000/";
+        console.log("Salio el usuario");
+      };
+    </script>
+  </body>
+</html>
