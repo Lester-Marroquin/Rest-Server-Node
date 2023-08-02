@@ -72,12 +72,7 @@ const { verificaToken, verificaRol } = require('../middlewares/autenticacion');
           usuario: usuarioDB
         })
       })
-      .catch(err => {
-        res.status(400).json({
-          ok: false,
-          err
-      });
-    });
+      
   });
   
   app.put('/usuario/:id', [verificaToken, verificaRol], function (req, res) {
