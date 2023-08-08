@@ -2,53 +2,99 @@
 	"info": {
 		"_postman_id": "d015e965-b01e-460f-a916-758d93f476c7",
 		"name": "Cafe-Node",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "17649570"
 	},
 	"item": [
 		{
-			"name": "Usuario: Crear usuario",
+			"name": "Usuario: Obtener Usuario por limite y dede",
 			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "nombre",
-							"value": "Lester",
-							"type": "text"
-						},
-						{
-							"key": "email",
-							"value": "lester.marroquin96@gmail.com",
-							"type": "text"
-						},
-						{
-							"key": "password",
-							"value": "",
-							"type": "text",
-							"disabled": true
-						}
-					]
-				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{url}}/usuario",
+					"raw": "{{url}}/usuario?limite=20&desde=0",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"usuario"
+					],
+					"query": [
+						{
+							"key": "limite",
+							"value": "20"
+						},
+						{
+							"key": "desde",
+							"value": "0"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Usuario: PUT",
+			"name": "Usuario: Crear Usuario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nombre",
+							"value": "test4",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "test4@test.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						},
+						{
+							"key": "role",
+							"value": "SUPER_ROLE",
+							"type": "text"
+						}
+					]
+				},
+				"url": "{{url}}/usuario"
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario: Actualizar Usuario",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "urlencoded",
 					"urlencoded": [
@@ -74,43 +120,7 @@
 						}
 					]
 				},
-				"url": {
-					"raw": "{{url}}/usuario/64acd47d53e9f33baa362e93",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"usuario",
-						"64acd47d53e9f33baa362e93"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Usuario: Obtener Usuario por limite y dede",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/usuario?limite=5&desde=0",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"usuario"
-					],
-					"query": [
-						{
-							"key": "limite",
-							"value": "5"
-						},
-						{
-							"key": "desde",
-							"value": "0"
-						}
-					]
-				}
+				"url": "{{url}}/usuario/64b6257c26f7caf78a68bc54"
 			},
 			"response": []
 		},
@@ -118,15 +128,407 @@
 			"name": "Usuario: Borrar usuario de BD",
 			"request": {
 				"method": "DELETE",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{url}}/usuario/64b6257c26f7caf78a68bc54"
+			},
+			"response": []
+		},
+		{
+			"name": "Login: Normal",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resp = pm.response.json();\r",
+							"\r",
+							"if(resp.ok) {\r",
+							"    let token = resp.token;\r",
+							"    pm.environment.set(\"token\", token);\r",
+							"} else {\r",
+							"    console.log( \"No se actualizo el token\" );\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjp7Il9pZCI6IjY0YWNlNDVhODkzZDYyNThkYzI0NjMwOCIsIm5vbWJyZSI6InRlc3QxIiwiZW1haWwiOiJ0ZXN0MUBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUl9ST0xFIiwiZXN0YWRvIjp0cnVlLCJnb29nbGUiOnRydWUsIl9fdiI6MH0sImlhdCI6MTY4OTY1NTM0NiwiZXhwIjoxNjg5NjU3OTM4fQ.3bn-i_L9at4rwMf6RevQDYGsKnQK_RvVxP81lpYQnPE",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "test1@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": "{{url}}/login"
+			},
+			"response": []
+		},
+		{
+			"name": "Login: Google",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resp = pm.response.json();\r",
+							"\r",
+							"if(resp.ok) {\r",
+							"    let token = resp.token;\r",
+							"    pm.environment.set(\"token\", token);\r",
+							"} else {\r",
+							"    console.log( \"No se actualizo el token\" );\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "idtoken",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjkxMWUzOWUyNzkyOGFlOWYxZTlkMWUyMTY0NmRlOTJkMTkzNTFiNDQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzOTU5ODMyMDgzMzgtazg4Nml2cjN1ZnI0bGZ0dHZiNjVlcmVvaHY0YzU3OWQuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzOTU5ODMyMDgzMzgtazg4Nml2cjN1ZnI0bGZ0dHZiNjVlcmVvaHY0YzU3OWQuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTAxNDM0MTA0NzU0MjEzNTIwNDgiLCJlbWFpbCI6Imxlc3Rlci5tYXJyb3F1aW45NkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmJmIjoxNjkxNDczMDY4LCJuYW1lIjoiTGVzdGVyIE1hcnJvcXVpbiIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQWNIVHRlV3JiaURBcy00ZEduZGpncWtRUFNuU2tnOFVuTG9jUG9GM05xR3JFYm49czk2LWMiLCJnaXZlbl9uYW1lIjoiTGVzdGVyIiwiZmFtaWx5X25hbWUiOiJNYXJyb3F1aW4iLCJsb2NhbGUiOiJlcy00MTkiLCJpYXQiOjE2OTE0NzMzNjgsImV4cCI6MTY5MTQ3Njk2OCwianRpIjoiYzg2NDljMjgwNzZlYzY0ZmIyM2E0YzgzMmI4N2RmMDJkNDc4N2I1NiJ9.d8YYmdzzzq2cvvCAUlYX1r2gSqUmf75Elbqs7GBtoy2D2jprrXvyDOqaqrYBfDkiKxdQcN0lc5VbjW7hwjvgp4Y5nke_5bjcZN5WN6zVixCdB62xpk2kSB7gf0tHZgSyWNjVHFGt4QatmcvSGYKtTFyERQO-Zv1atskGVR3zfT1BGuLN-tnDj5NwXKVxaaj3IvaJ_B8_HEqGbsD7rsIUvjQzkKaM1V_j2UHNQ6gPj1RwwiLoUzLZ3byEFU9VSMT21RDAti5dsTwsTo3I97nEZvFcqlEk5r7b4oudrebCxMxbV7NuOBM-oRswYELTelHyJHn6igdkhaGMpoLCnpHpHA",
+							"type": "text"
+						}
+					]
+				},
+				"url": "{{url}}/google"
+			},
+			"response": []
+		},
+		{
+			"name": "Categoria: Obtener Categoria",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{url}}/categoria"
+			},
+			"response": []
+		},
+		{
+			"name": "Categoria: Obtener Una Categoria",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{url}}/categoria/64c88239ee5b3fb395f56e5e"
+			},
+			"response": []
+		},
+		{
+			"name": "Categoria: Crear Categoria",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "descripcion",
+							"value": "Ensaladas Gorment",
+							"type": "text"
+						}
+					]
+				},
+				"url": "{{url}}/categoria"
+			},
+			"response": []
+		},
+		{
+			"name": "Categoria: Actualizar Categoria",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "descripcion",
+							"value": "Bebida Fria",
+							"type": "text"
+						}
+					]
+				},
+				"url": "{{url}}/categoria/64c8392c7d0809e9db269349"
+			},
+			"response": []
+		},
+		{
+			"name": "Categoria: Borrar Categoria",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{url}}/categoria/64c8392c7d0809e9db269349"
+			},
+			"response": []
+		},
+		{
+			"name": "Producto: Obtiene Un Producto",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{url}}/producto/64c9e54478e3195393c35344"
+			},
+			"response": []
+		},
+		{
+			"name": "Producto: Obtiene Los Productos",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{url}}/producto"
+			},
+			"response": []
+		},
+		{
+			"name": "Producto: Crear Producto",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nombre",
+							"value": "Ensalada Gormet",
+							"type": "text"
+						},
+						{
+							"key": "precioUni",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "categoria",
+							"value": "64b06c590b1358b87aab634f",
+							"type": "text"
+						}
+					]
+				},
+				"url": "{{url}}/producto"
+			},
+			"response": []
+		},
+		{
+			"name": "Producto: Actualizar",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nombre",
+							"value": "Ensalada Super Rica",
+							"type": "text"
+						},
+						{
+							"key": "precioUni",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "categoria",
+							"value": "64c889b985cb0137cbd219db",
+							"type": "text"
+						},
+						{
+							"key": "disponible",
+							"value": "true",
+							"type": "text"
+						}
+					]
+				},
+				"url": "{{url}}/producto/64c896a7c2991b5ce1e6f07f"
+			},
+			"response": []
+		},
+		{
+			"name": "Producto: Borra Un Producto",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{url}}/producto/64c9e54478e3195393c35344"
+			},
+			"response": []
+		},
+		{
+			"name": "Producto: Buscar Por Termino",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": "{{url}}/producto/buscar/Ensalada"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload: Usuario",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "archivo",
+							"type": "file",
+							"src": "/C:/Users/leste/Desktop/Ordenar/fondos/capitan-america.png"
+						}
+					]
+				},
+				"url": "{{url}}/upload/usuarios/64b06c590b1358b87aab634f"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload: Productos",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "archivo",
+							"type": "file",
+							"src": "/C:/Users/leste/Desktop/Ordenar/fondos/f9906a5f4cfc09e2dee0e6aa3d79db6a38cb066e8393719acca1bf25845f8dcd.jpg"
+						}
+					]
+				},
+				"url": "{{url}}/upload/productos/64c9ef2c993822fbe8f6f168"
+			},
+			"response": []
+		},
+		{
+			"name": "Imagen: Ver Imagen",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{url}}/usuario/64ace4c8893d6258dc246344",
+					"raw": "{{url}}/imagen/usuarios/64b0459c57bd176135bc6010-339.png?token={{token}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"usuario",
-						"64ace4c8893d6258dc246344"
+						"imagen",
+						"usuarios",
+						"64b0459c57bd176135bc6010-339.png"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
 					]
 				}
 			},
